@@ -30,9 +30,7 @@ public class Spawner : MonoBehaviour
 		while (true)
 		{
 			Monster monster = Instantiate(monsterSpawnPrefab, monsterSpawnList[0], Quaternion.identity);
-			yield return new WaitForSeconds(0.5f);
-
-			break;
+			yield return new WaitForSeconds(1f);
 		}
 	}
 	#endregion
