@@ -1,21 +1,27 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster : Character
 {
-	int targetValue = 0;
-	public int HP = 50;
-
 	[SerializeField] private float monsterSpeed = 1;
+	[SerializeField] private HitText HitText;
+	[SerializeField] private Image monsterFill, monsterFillDeco;
+
+	int targetValue = 0;
+	public int HP, MaxHP = 50;
+
 	bool isDead = false;
 
 	public override void Start()
 	{
+		HP = MaxHP;
 		base.Start();
 	}
 
 	private void Update()
 	{
+		monsterFillDeco.fillAmount = Mathf.Lerp(monsterFillDeco.fillAmount, monsterFill.fillAmount, Time.deltaTime * 2.0f);
 		if (isDead) return;
 
 		Vector2 targetPos = Spawner.monsterSpawnList[targetValue];
@@ -33,7 +39,11 @@ public class Monster : Character
 	{
 		if (isDead) return;
 
+		Debug.Log("Damage : " + dmg);
 		HP -= dmg;
+		monsterFill.fillAmount = (float)HP / MaxHP;
+		Instantiate(HitText, transform.position, Quaternion.identity).Initalize(dmg);
+
 		if (HP <= 0)
 		{
 			isDead = true;
