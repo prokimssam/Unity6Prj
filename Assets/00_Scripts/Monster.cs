@@ -39,7 +39,6 @@ public class Monster : Character
 	{
 		if (isDead) return;
 
-		Debug.Log("Damage : " + dmg);
 		HP -= dmg;
 		monsterFill.fillAmount = (float)HP / MaxHP;
 		Instantiate(HitText, transform.position, Quaternion.identity).Initalize(dmg);
@@ -47,6 +46,9 @@ public class Monster : Character
 		if (HP <= 0)
 		{
 			isDead = true;
+
+			GameManager.Instance.GetMoney(1);
+			GameManager.Instance.RemoveMonster(this);
 			gameObject.layer = LayerMask.NameToLayer("Default");
 			StartCoroutine(DeadCoroutine());
 			AnimatorChange("DEAD", true);
